@@ -13,7 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
-
+import jakarta.validation.constraints.*;
 import javax.print.attribute.standard.Media;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -33,7 +33,7 @@ public class EventControllerTest {
     {
         "location": "New York",
         "startTs": "2025-07-24T09:00:00",
-        "endTs": "2025-07-24T12:00:00"
+        "endTs": "2025-08-01T12:00:00"
     }
     """;
 
@@ -112,7 +112,7 @@ public class EventControllerTest {
                 {
                     "location" : "Manhattan",
                     "startTs" : "2025-07-27T00:00:00",
-                    "endTs" : "2025-07-27T00:00:01"
+                    "endTs" : "2025-08-27T00:00:01"
                 }
                 """;
 
@@ -122,7 +122,7 @@ public class EventControllerTest {
                 .andExpect(jsonPath("$.id").value(id))
                 .andExpect(jsonPath("$.location").value("Manhattan"))
                 .andExpect(jsonPath("$.startTs").value(Matchers.matchesPattern("2025-07-27T00:00:00(\\.\\d{3}\\+00:00)?")))
-                .andExpect(jsonPath("$.endTs").value(Matchers.matchesPattern("2025-07-27T00:00:01(\\.\\d{3}\\+00:00)?")));
+                .andExpect(jsonPath("$.endTs").value(Matchers.matchesPattern("2025-08-27T00:00:01(\\.\\d{3}\\+00:00)?")));
 
 
     }

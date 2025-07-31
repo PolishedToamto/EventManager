@@ -2,12 +2,15 @@ package com.myDomain.eventManager.controller;
 
 import com.myDomain.eventManager.entity.Event;
 import com.myDomain.eventManager.repository.EventRepository;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import org.apache.coyote.Response;
 import org.hibernate.annotations.Parameter;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,7 +31,7 @@ public class EventController {
     }
 
     @PostMapping
-    public ResponseEntity<Event> createEvent(@RequestBody Event event) {
+    public ResponseEntity<Event> createEvent(@Valid @RequestBody Event event) {
         Event e = repository.save(event); // Save new event
         return ResponseEntity.status(HttpStatus.CREATED).body(e);
     }
@@ -39,7 +42,7 @@ public class EventController {
     }
 
     @GetMapping(params = "location")
-    public ResponseEntity<List<Event>> getEventByLocation(@RequestParam(required = false) String location){
+    public ResponseEntity<List<Event>> getEventByLocation(@Valid @Pattern(regexp = "^[a-zA-Z1-9 ,-]+$", message = "please enter a valid location") @RequestParam(required = false) String location){
         if(location == null){
             return getAllEvents();
         }
@@ -58,7 +61,7 @@ public class EventController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Event> updateEvent(@PathVariable Long id, @RequestBody Event e){
+    public ResponseEntity<Event> updateEvent(@PathVariable Long id, @Valid @RequestBody Event e){
         return repository.findById(id)
                 .map(event -> {
 
